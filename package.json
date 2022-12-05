@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/traseTracanna/mockStore/issues"
   },
-  "homepage": "https://github.com/traseTracanna/mockStore#readme"
+  "homepage": "https://github.com/traseTracanna/mockStore#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.8.0"
+  }
 }

@@ -1,0 +1,5 @@
+These files define the API endpoints used to perform CRUD operations for every given aspect of the program.
+For more information/Clarity see the RESTAPIEndpoints Tutorial project /backend/routes/books.js 
+and the Creating REST API Endpoints tutorial in the Connecting front end to back end section of Codecademy.
+
+All of these operations will need to access the database in someway via a query.
