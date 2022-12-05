@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const db = require('./queries');
 
-
+app.get('/', (req,res) =>{
+    res.send("Server Default Tester")
+});
 
 
 app.listen(port,() =>{
