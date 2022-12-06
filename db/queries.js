@@ -8,3 +8,9 @@ const pool = new Pool({
   password: 'postgres',
   port: 5432,
 })
+
+module.exports = {
+  query: (text, params, callback) =>{ 
+    return pool.query(text, params, callback)
+  },
+};

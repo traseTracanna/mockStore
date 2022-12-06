@@ -9,6 +9,7 @@ const db = require('./db/queries');
 
 const userRouter = require('./routes/user');
 
+app.use(express.json());
 app.use('/user', userRouter);
 
 

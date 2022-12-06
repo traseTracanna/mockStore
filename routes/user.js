@@ -1,4 +1,6 @@
 const userRouter = require('express').Router();
+const db = require('../db/queries');
+
 
 module.exports = userRouter;
 
@@ -10,17 +12,43 @@ module.exports = userRouter;
     //Deleting the user
 
 //Get user's basic information, AND a list of their orders
-userRouter.get('/:id', (req, res) =>{
+userRouter.get('/', (req, res) =>{
+    res.send('test');
 
 });
 
 //Create a new user
 userRouter.post('/register', (req,res) =>{
+    //const userName = req.params.userName;
+    const { username, email, password } = req.body;
+    db.query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3)', [username, email, password], (err, result) =>{
+        if (err){
+            res.send(err);
+        }
+        res.send('user registered!');
+    });
 
 });
 
 //Perform a user login
-userRouter.post('/login/:id', (req,res) =>{
+userRouter.post('/login', (req,res) =>{
+    const { username, password } = req.body;
+
+    db.query('SELECT * FROM users WHERE username = $1', [username], (err, user) => {
+        if (err){
+            return res.send(err);
+        }
+        if(user.rows.length === 0){
+            return res.status(400).send('Wrong username or password');
+        }
+
+        if (user.rows[0].password === password){
+            console.log('logged in successfully');
+            res.send(user.rows[0]);
+        } else{
+            res.status(400).send('Wrong username or password');
+        }
+     })
 
 });
 

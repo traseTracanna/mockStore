@@ -18,6 +18,7 @@
   "homepage": "https://github.com/traseTracanna/mockStore#readme",
   "dependencies": {
     "express": "^4.18.2",
+    "passport-local": "^1.0.0",
     "pg": "^8.8.0"
   }
 }
