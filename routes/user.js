@@ -12,8 +12,17 @@ module.exports = userRouter;
     //Deleting the user
 
 //Get user's basic information, AND a list of their orders
-userRouter.get('/', (req, res) =>{
-    res.send('test');
+//Currently returns just their info from the DB
+//TODO: call to the orders DB(i'm not sure if this is the best way to go about this) to get all of a specific user's orders
+//Maybe i can hard code a request to the orders section of the api and async/await the results, but maybe that's needlessly overcomplicating things?
+userRouter.get('/:id', (req, res) =>{
+    const id = req.params.id;
+    db.query('SELECT * FROM users WHERE id = $1', [id], (err, result) =>{
+        if(err){
+            return res.status(400).send(err);
+        }
+        res.status(200).send(result);
+    })
 
 });
 
@@ -52,12 +61,56 @@ userRouter.post('/login', (req,res) =>{
 
 });
 
+//update a user's information
+//this works in it's current form but still requires every column of the row to be submitted in the body.
+//The commented code creates a statement I hoped would be able to modify only certain columns so the request body would only be the updated columns and not everything
+//When trying different methods of implementing this statement however i kept getting syntax errors from SQL
+userRouter.put('/:id', (req, res) =>{
+    const id = req.params.id;
+    const { username, email, password } = req.body;
+
+   /* const updateFields = {
+       'username': username,
+       'email': email,
+       'password': password,     
+    };
+
+
+    let queryParamConstructor = [];
+    for(let property in updateFields){
+        if(updateFields[property] !== undefined){
+            queryParamConstructor.push(`${property} = ${updateFields[property]}`);
+
+        };
+    };
+    const queryParamStatement = queryParamConstructor.join(', ');
+*/
+    db.query('UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4 RETURNING *;', [username, email, password, id], (err, result)=>{
+        console.log(err);
+        if(err){
+            return res.status(400).send(err);
+        } else if (result.rows.length === 0){
+            return res.status(400).send('User not found');
+        }
+        res.status(200).send(result.rows[0]);
+
+    });
+})
+
 //Delete a user (not sure how this would work, would it also delete the history of all their orders from the database? seems incorrect)
 userRouter.delete('/:id', (req,res) =>{
+    const id = req.params.id;
+
+    db.query('DELETE FROM users WHERE id = $1', [id], (err, result) =>{
+        console.log(result);
+        if(err){
+            return res.status(400).send(err);
+        } else if(result.rowCount === 0 ){
+            return res.status(400).send('Delete failed: User not found');
+        }
+        res.status(200).send(`Removed ${result.rowCount} users`);
+
+    });
 
 });
 
-//Update a user's information
-userRouter.put('/:id', (req,res) =>{
-
-});

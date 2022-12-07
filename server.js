@@ -8,9 +8,11 @@ const port = 3000;
 const db = require('./db/queries');
 
 const userRouter = require('./routes/user');
+const productsRouter = require('./routes/products');
 
 app.use(express.json());
 app.use('/user', userRouter);
+app.use('/products', productsRouter);
 
 
 //GET Homepage
