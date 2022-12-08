@@ -1,4 +1,6 @@
 const ordersRouter = require('express').Router();
+const db = require('../db/queries');
+const { v4: uuidv4 } = require("uuid");
 
 module.exports = ordersRouter;
 
@@ -12,21 +14,21 @@ module.exports = ordersRouter;
 
 
 //TODO Create a new order
-productsRouter.post('/', (req, res) =>{
+ordersRouter.post('/', (req, res) =>{
 
 });
 
 //TODO Read an order's information
-productsRouter.get('/', (req, res) =>{
+ordersRouter.get('/', (req, res) =>{
 
 });
 
 //TODO Update an orders information
-productsRouter.put('/', (req, res) =>{
+ordersRouter.put('/', (req, res) =>{
 
 });
 
 //TODO Delete an order
-productsRouter.delete('/', (req, res) =>{
+ordersRouter.delete('/', (req, res) =>{
 
 });
