@@ -1,0 +1,9 @@
+Project Plan:
+    1) login page
+    2) registration page
+    3) Products listing page
+    4) Products details page
+    5) Cart page
+    6) Checkout page
+    7) user page
+    8) order history page

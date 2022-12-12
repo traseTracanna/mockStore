@@ -1,0 +1,27 @@
+{
+  "name": "fauxshoppernproject",
+  "version": "1.0.0",
+  "description": "Mock online store project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/traseTracanna/mockStore.git"
+  },
+  "author": "Trase Tracanna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/traseTracanna/mockStore/issues"
+  },
+  "homepage": "https://github.com/traseTracanna/mockStore#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "express": "^4.18.2",
+    "passport-local": "^1.0.0",
+    "pg": "^8.8.0",
+    "react-router-dom": "^6.4.5",
+    "uuid": "^9.0.0"
+  }
+}
