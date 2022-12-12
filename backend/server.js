@@ -4,7 +4,7 @@ const express = require('express');
 //app = express(); app seems to be the main director of routes in the root file, which tells requests to go to other files based on the requested route
 //express.Router(); routers are then used in those specific files to go to their own endpoints.
 const app = express();
-const port = 3000;
+const port = 8000;
 const db = require('./db/queries');
 
 const userRouter = require('./routes/user');

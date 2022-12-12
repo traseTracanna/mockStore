@@ -32,7 +32,7 @@ userRouter.post('/register', (req,res) =>{
     const { username, email, password } = req.body;
     db.query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3)', [username, email, password], (err, result) =>{
         if (err){
-            res.send(err);
+            return res.send(err);
         }
         res.send('user registered!');
     });
