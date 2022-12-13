@@ -1,10 +1,11 @@
 const express = require('express');
-
+const cors = require('cors');
+var bodyParser = require('body-parser');
 //difference between app = express(); and router = express.Router(); ??
 //app = express(); app seems to be the main director of routes in the root file, which tells requests to go to other files based on the requested route
 //express.Router(); routers are then used in those specific files to go to their own endpoints.
 const app = express();
-const port = 8000;
+const port = 3001;
 const db = require('./db/queries');
 
 const userRouter = require('./routes/user');
@@ -12,7 +13,12 @@ const productsRouter = require('./routes/products');
 const cartRouter = require('./routes/cart');
 const ordersRouter = require('./routes/orders');
 
+
+app.use(cors());
 app.use(express.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
 app.use('/user', userRouter);
 app.use('/products', productsRouter);
 app.use('/cart', cartRouter);

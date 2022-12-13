@@ -15,21 +15,20 @@ export default function(props){
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
+        
         try{
-            let res = await fetch('http://localhost:8000/user/register', {
+            let res = await fetch('http://localhost:3001/user/register', {
                 method: "POST",
-                headers:{
-                    accept: 'application/json',
+                headers: {
+                  "Content-type": "application/json"
                 },
-                body: JSON.stringify({
-                    username: username,
-                    email: email,
-                    password: password,
-                }),
+                body: JSON.stringify({username: username, 
+                  email: email, 
+                  password: password}),
             });
-            alert(res);
+            
             let resJson = await res.json();
-            if(resJson.status === 200){
+            if(resJson.rowCount === 1){
                 setName("");
                 setEmail("");
                 setPassword("");
@@ -47,7 +46,7 @@ return (
     <div className="Auth-form-container">
       <form className="Auth-form" onSubmit={handleSubmit}>
         <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Sign In</h3>
+          <h3 className="Auth-form-title">Sign Up</h3>
           <div className="text-center">
             Already registered?{" "}
             <span className="link-primary" onClick={navToLogin}>

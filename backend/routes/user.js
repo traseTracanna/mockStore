@@ -30,11 +30,12 @@ userRouter.get('/:id', (req, res) =>{
 userRouter.post('/register', (req,res) =>{
     //const userName = req.params.userName;
     const { username, email, password } = req.body;
+    console.log(`test: ${username}, ${email}, ${password}`);
     db.query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3)', [username, email, password], (err, result) =>{
         if (err){
             return res.send(err);
         }
-        res.send('user registered!');
+        res.status(200).send(result);
     });
 
 });

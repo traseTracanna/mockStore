@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/traseTracanna/mockStore#readme",
   "dependencies": {
+    "body-parser": "^1.20.1",
     "bootstrap": "^5.2.3",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "passport-local": "^1.0.0",
     "pg": "^8.8.0",
