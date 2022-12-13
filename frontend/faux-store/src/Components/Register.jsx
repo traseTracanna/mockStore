@@ -29,10 +29,10 @@ export default function(props){
             
             let resJson = await res.json();
             if(resJson.rowCount === 1){
-                setName("");
-                setEmail("");
-                setPassword("");
-                setMessage("User Created Successfully");
+              setName("");
+              setEmail("");
+              setPassword("");
+              setMessage("User Created Successfully");
             } else{
                 setMessage("Some Error occured");
             }

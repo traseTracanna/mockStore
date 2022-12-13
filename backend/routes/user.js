@@ -28,9 +28,7 @@ userRouter.get('/:id', (req, res) =>{
 
 //Create a new user
 userRouter.post('/register', (req,res) =>{
-    //const userName = req.params.userName;
     const { username, email, password } = req.body;
-    console.log(`test: ${username}, ${email}, ${password}`);
     db.query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3)', [username, email, password], (err, result) =>{
         if (err){
             return res.send(err);
@@ -42,21 +40,21 @@ userRouter.post('/register', (req,res) =>{
 
 //Perform a user login
 userRouter.post('/login', (req,res) =>{
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    db.query('SELECT * FROM users WHERE username = $1', [username], (err, user) => {
+    db.query('SELECT * FROM users WHERE email = $1', [email], (err, user) => {
         if (err){
             return res.send(err);
         }
         if(user.rows.length === 0){
-            return res.status(400).send('Wrong username or password');
+            return res.status(400).send('Wrong email or password');
         }
 
         if (user.rows[0].password === password){
             console.log('logged in successfully');
-            res.send(user.rows[0]);
+            res.status(200).send({success: true});
         } else{
-            res.status(400).send('Wrong username or password');
+            res.status(400).send('Wrong email or password');
         }
      })
 

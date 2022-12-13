@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Login from './Components/Login';
 import Register from './Components/Register';
+import Store from './Components/Store';
 import "./App.css"
 
 const router = createBrowserRouter([
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path:"/register",
     element: <Register />
+  },
+  {
+    path:"/store",
+    element: <Store />
   }
 ]);
 
