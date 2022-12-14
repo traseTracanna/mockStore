@@ -7,3 +7,6 @@ Project Plan:
     6) Checkout page
     7) user page
     8) order history page
+
+
+    See redux section "strategies for complex state" for html/css/state management for the store and cart pages

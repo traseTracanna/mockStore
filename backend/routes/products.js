@@ -42,6 +42,7 @@ productsRouter.get('/:id', (req, res) =>{
 productsRouter.get('/', (req,res) =>{
     const category = req.query.category;
 
+    if(category !== undefined){
     db.query('SELECT * FROM products WHERE category = $1;', [category], (err, result) =>{
         if (err) {
          return res.status(400).send(err);
@@ -50,8 +51,17 @@ productsRouter.get('/', (req,res) =>{
         }
         res.status(200).send(result.rows);
         });
+    } else{
+        db.query('SELECT * FROM products', (err, result) =>{
+            if(err){
+                return res.status(400).send(err);
+            }
+            res.status(200).send(result.rows);
+        });
 
-    });
+    };
+
+});
 
 //Update a product's information
 //The req body of this will have to contain the updated information, and the unchanged information in order to work properly
