@@ -10,6 +10,7 @@ export default function Product({ product, children }) {
                     <li className="product-info">description: {product.description}</li>
                     <li className="product-info">price: {product.price}</li>
                     </ul>
+                    
                 </span>
 
             </span>

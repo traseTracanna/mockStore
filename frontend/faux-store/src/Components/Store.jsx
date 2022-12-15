@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import  Product  from './Product';
+import CartButton from './CartButton';
+import Cart from './Cart';
 
 
 export default function(){
     
     const [products, setProducts] = useState([]);
-    let tester = [];
     //make a method to get all of the items in the products db and save their info in variables to be displayed
     //populate a list of tiles of images that shows the name and price of the item
     //have a button below each tile to add an entered quantity into the cart
@@ -32,17 +33,12 @@ export default function(){
         
     }, []);
 
-//For some reason, when the fetch requets first goes out, the page tries to render regardless meaning it will try to call products.map before products has any info
-//this calls an error 'you can't use .map on undefined'
-//this method just makes it wait until there is data i think
-    const renderDetermine = () =>{
 
-        if(products[0] !== undefined){
-            const returner = products.map((item) =>{
-                return <Product product={item}></Product>});
-            return returner;    
-    }
-}
+    //I guess this will just call to the Cart.jsx class and update some array of items stored in there that will be a part of that component's returned render object?
+    const onAddToCartHandler = (item, itemCount) =>{
+
+    };
+
 
 console.log(products);
 
@@ -60,9 +56,14 @@ console.log(products);
 
             </div>
             <h1>Store Page</h1> 
-            <div className='products-container'>{
-                renderDetermine()
-            }
+            <div className='products-container'>
+                {products[0] !== undefined ? products.map((item) =>(
+                <Product product={item}>
+                    <CartButton item={item} addToCartHandler={(item, itemCount) =>{onAddToCartHandler(item, itemCount)}} />
+                </Product>)): undefined}
+            </div>
+            <div className='cart-bar'>
+                <Cart userId={7}/>
             </div>
             
         </div>

@@ -38,3 +38,26 @@ label {
   font-weight: 600;
   color: rgb(34, 34, 34);
 }
+
+.product {
+  padding: 16px 13px 16px 14px;
+  border-radius: 6px;
+  border: solid 1px #141c3a;
+  background-color: none;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.product-container {
+  grid-row-start: 1;
+  grid-column-start: 1;
+}
+
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-column-gap: 12px;
+  grid-row-gap: 12px;
+}

@@ -13,15 +13,32 @@ module.exports = cartRouter;
 
 //Create a new cart
 cartRouter.post('/', (req, res) =>{
-    const userId = req.body.id;
+    const { id } = req.body;
+    console.log(req.body);
     const newCartId = uuidv4();
-    db.query('INSERT INTO carts VALUES ($1, 1000, 0, 0, $2', [userId, newCartId], (err, result)=>{
+    console.log(newCartId);
+    console.log(id);
+    db.query('INSERT INTO carts (user_id, product_id, product_amount, total_price, cart_instance_id) VALUES ($1, 1000, 0, 0, $2) RETURNING cart_instance_id', [id, newCartId], (err, result)=>{
         if (err){
             return res.status(400).send(err);
         }
-        res.status(200).send(`Cart id #${result.rows[0].cart_instance_id} instance created for user ${userId}`);
+        res.status(200).send({cartId: result.rows[0].cart_instance_id});
     })
 
+});
+
+//Find a cart based on user ID
+cartRouter.get('/user/:id', (req, res) =>{
+    const userId = req.params.id;
+    db.query('SELECT * FROM carts WHERE user_id = $1', [userId], (err, result)=>{
+        if(err){
+            return res.status(400).send(err);
+        }
+        if(result.rows.length === 0){
+            return res.status(200).send({cartId: null, message: `No cart for user ${userId}`});
+        }
+        res.status(200).send({cartId: result.rows[0].cart_instance_id});
+    })
 });
 
 //Read a cart's contents
@@ -33,7 +50,7 @@ cartRouter.get('/:id', (req, res) =>{
         } else if(result.rows.length === 0){
             return res.status(400).send('Unknown Cart Id');
         }
-        res.status(200).send(result.rows[0]);
+        res.status(200).send(result.rows);
 
     });
 
@@ -59,16 +76,16 @@ cartRouter.post('/:id', (req, res) =>{
 //Add to a cart's contents
 cartRouter.post('/:id', (req, res) =>{
     const cartId = req.params.id;
-    const { productId, productAmount, userId, totalPrice } = req.body;
+    const { productId, productAmount, userId, totalPrice, cartInstanceId } = req.body;
 
     db.query('INSERT INTO carts (user_id, product_id, product_amount, total_price, cart_instance_id VALUES ($1, $2, $3, $4, $5)', 
-    [userId, productId, productAmount, totalPrice, cartId], (err, result) =>{
+    [userId, productId, productAmount, totalPrice, cartId, cartInstanceId], (err, result) =>{
         if(err){
             return res.status(400).send(err);
         } else if (result.rows.length === 0){
-            return res.status(400).send('Cart instance id not found');
+            return res.status(400).send({message: 'Cart instance id not found'});
         }
-        res.status(200).send(`${productAmount} ${productId}(s) have been added to user id #${userId}'s cart`);
+        res.status(200).send({message: `${productAmount} ${productId}(s) have been added to user id #${userId}'s cart`});
     });
 
 });
