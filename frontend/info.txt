@@ -10,3 +10,30 @@ Project Plan:
 
 
     See redux section "strategies for complex state" for html/css/state management for the store and cart pages
+
+    12/15:
+    Cart.jsx successfully generates a new cart when called with a userID. This generated cart is added to the DB with a unique UUID. 
+    Current error is coming from the 'populate cart' function after a recognized user's cart is pulled. Something about the response for the get request for the cart
+    is throwing a weird error, like the response object is not JSON but instead html 
+    Despite this i don't have time tonight to parse the res object before it gets .json() ified, but i think that would be the first place to look.
+
+    Tomorrow I need to try to get adding items to the cart functionality working properly, and if there's time starting the checkout process.
+    
+
+    12/16: 
+    I'm not even sure what i got working today. 
+        The biggest issue i need to figure out, as it is affecting how a cart re-populates on load, is getting the proper cart_id to store in the state and then be used immediately
+            on the first render. I don't know if it just keeps getting written over with new page renders or something, but it's going to be problematic to populate the cart
+            if it can't send the correct cart_Id in the request.
+            I'm worried that the way i have the cart state set up in Cart.jsx is just causing renders and calls to generateCart too many times which is fucking it all up,
+                but i'm not really sure how to test it at all
+
+        I'm having trouble sending paramaters from the user input form in CartButton.jsx, but have tried to use weird state stuff as a work around -- it doesn't always work
+            I'm afriad I might have to rework my code in a major way to get the cart component to display correctly.
+                right now it only renders when you add something to the cart as this was the only way i could figure out how to update items in the cart when using the form
+
+        Beyond the general issues of the page loading weird, failing to update state of the cart how i need it to, and having issues actually getting things to add to the cart
+            object correctly, I'm also having issues with my logic in general. 
+                The way that a cart repopulates and adds items to its {items: []} property i don't think is working right but I've been so preoccupied trying to get the 
+                    id and add-to-cart stuff to work for the sake of api calls that i haven't even started to test it
+                Another issue of logic is the way the cart state's {totalPrice: Number} property is being updated both when a new item is added and when the cart is initially populated

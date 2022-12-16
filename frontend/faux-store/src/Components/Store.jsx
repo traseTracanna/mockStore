@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback } from 'react';
 import  Product  from './Product';
 import CartButton from './CartButton';
 import Cart from './Cart';
@@ -7,6 +7,7 @@ import Cart from './Cart';
 export default function(){
     
     const [products, setProducts] = useState([]);
+    const [itemToAdd, setItemToAdd] = useState({item: undefined, itemCount: undefined});
     //make a method to get all of the items in the products db and save their info in variables to be displayed
     //populate a list of tiles of images that shows the name and price of the item
     //have a button below each tile to add an entered quantity into the cart
@@ -35,12 +36,18 @@ export default function(){
 
 
     //I guess this will just call to the Cart.jsx class and update some array of items stored in there that will be a part of that component's returned render object?
-    const onAddToCartHandler = (item, itemCount) =>{
+    const onAddToCartHandler = (item, itemCount, e) =>{
+        e.preventDefault();
+        
+        setItemToAdd({item: item, itemCount: itemCount})
+        //setItemToAdd({item: undefined, itemCount: undefined})
+        console.log(item, itemCount);
+        
 
     };
 
 
-console.log(products);
+//console.log(products);
 
 
    
@@ -59,11 +66,13 @@ console.log(products);
             <div className='products-container'>
                 {products[0] !== undefined ? products.map((item) =>(
                 <Product product={item}>
-                    <CartButton item={item} addToCartHandler={(item, itemCount) =>{onAddToCartHandler(item, itemCount)}} />
+                    <CartButton item={item} addToCartHandler={(item, itemCount, e) =>{onAddToCartHandler(item, itemCount, e)}} />
                 </Product>)): undefined}
             </div>
-            <div className='cart-bar'>
-                <Cart userId={7}/>
+            <div className='cart-bar'>{
+                itemToAdd.item !== undefined ? <Cart userId={8} itemToAdd={itemToAdd}/> : undefined
+            }
+                
             </div>
             
         </div>

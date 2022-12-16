@@ -57,7 +57,7 @@ cartRouter.get('/:id', (req, res) =>{
 });
 
 //Update a row's item count and total price
-cartRouter.post('/:id', (req, res) =>{
+cartRouter.put('/:id', (req, res) =>{
     const cartId = req.params.id;
     const { productId, productAmount, totalPrice } = req.body;
 
@@ -77,12 +77,13 @@ cartRouter.post('/:id', (req, res) =>{
 cartRouter.post('/:id', (req, res) =>{
     const cartId = req.params.id;
     const { productId, productAmount, userId, totalPrice, cartInstanceId } = req.body;
+    //console.log(`productID: ${productId}, productAmount: ${productAmount}, userId: ${userId}, totalPrice: ${totalPrice}, cartInstanceId: ${cartInstanceId}`);
 
-    db.query('INSERT INTO carts (user_id, product_id, product_amount, total_price, cart_instance_id VALUES ($1, $2, $3, $4, $5)', 
-    [userId, productId, productAmount, totalPrice, cartId, cartInstanceId], (err, result) =>{
+    db.query('INSERT INTO carts (user_id, product_id, product_amount, total_price, cart_instance_id) VALUES ($1, $2, $3, $4, $5)', [userId, productId, productAmount, totalPrice, cartInstanceId], (err, result) =>{
         if(err){
             return res.status(400).send(err);
-        } else if (result.rows.length === 0){
+        } else if (result.rowCount === 0){
+            console.log(result);
             return res.status(400).send({message: 'Cart instance id not found'});
         }
         res.status(200).send({message: `${productAmount} ${productId}(s) have been added to user id #${userId}'s cart`});
