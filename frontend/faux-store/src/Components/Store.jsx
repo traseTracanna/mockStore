@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback } from 'react';
 import  Product  from './Product';
 import CartButton from './CartButton';
 import Cart from './Cart';
+import CartRework from './CartRework';
 
 
 export default function(){
@@ -69,9 +70,8 @@ export default function(){
                     <CartButton item={item} addToCartHandler={(item, itemCount, e) =>{onAddToCartHandler(item, itemCount, e)}} />
                 </Product>)): undefined}
             </div>
-            <div className='cart-bar'>{
-                itemToAdd.item !== undefined ? <Cart userId={8} itemToAdd={itemToAdd}/> : undefined
-            }
+            <div className='cart-bar'>
+            <CartRework userId={8} addItemToCart={itemToAdd}/>
                 
             </div>
             

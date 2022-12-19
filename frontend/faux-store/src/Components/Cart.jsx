@@ -23,7 +23,7 @@ export default function Cart({userId, itemToAdd}){
         });
 
         let resJson = await res.json();
-        //console.log(`cartId returned from generateCart: ${resJson.cartId}`)
+        console.log(`cartId returned from generateCart: ${resJson.cartId}`)
         if (resJson.cartId !== null) {
             setCart(prevState => {return {...prevState, id: resJson.cartId}});
             populateCart(resJson.cartId);
@@ -58,9 +58,9 @@ export default function Cart({userId, itemToAdd}){
         generateCart(userId);
         console.log(cart.id);
         //populateCart(cart.id);
-        if(itemToAdd.item !== undefined){
-            addToCart(itemToAdd.item, itemToAdd.itemCount);
-        }
+        //if(itemToAdd.item !== undefined){
+       //     addToCart(itemToAdd.item, itemToAdd.itemCount);
+       // }
 
     }, []);
 
@@ -129,7 +129,7 @@ export default function Cart({userId, itemToAdd}){
         //set state of cart to include the new item and total price
         setCart({
             ...cart,
-            items: cart.items.push({item, count: itemCount}),
+            items: cart.items.push(item),
             totalPrice: cart.totalPrice + addedPrice,
         })
 
@@ -158,6 +158,8 @@ export default function Cart({userId, itemToAdd}){
 
         }
 
+        console.log(cart);
+
 
     };
 
@@ -165,7 +167,8 @@ export default function Cart({userId, itemToAdd}){
     return(
         <div className="cart-bar">
             <p className='item-count'>Unique item Ids in cart: {cart.items.length}</p>
-            <span className='total-price'>Total: ${cart.totalPrice}</span>
+            <span className='total-price'>Total: ${cart.totalPrice}  </span>
+            <span className='cart-items'>Cart Items: {cart.items.item}</span>
 
         </div>
     )

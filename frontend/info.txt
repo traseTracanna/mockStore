@@ -37,3 +37,9 @@ Project Plan:
                 The way that a cart repopulates and adds items to its {items: []} property i don't think is working right but I've been so preoccupied trying to get the 
                     id and add-to-cart stuff to work for the sake of api calls that i haven't even started to test it
                 Another issue of logic is the way the cart state's {totalPrice: Number} property is being updated both when a new item is added and when the cart is initially populated
+
+
+    12/18:
+    After reading through some documentation and playing around with my code in Cart.jsx some more, i think i'm just mis-using useEffect which is the crux of my issues.
+    At this point it might be wise to create a new Cart functionality file and start over than trying to refactor the code i already have in the file; it just feels a little
+        too messy at this point to try and deal with in that way.

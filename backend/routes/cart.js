@@ -79,14 +79,14 @@ cartRouter.post('/:id', (req, res) =>{
     const { productId, productAmount, userId, totalPrice, cartInstanceId } = req.body;
     //console.log(`productID: ${productId}, productAmount: ${productAmount}, userId: ${userId}, totalPrice: ${totalPrice}, cartInstanceId: ${cartInstanceId}`);
 
-    db.query('INSERT INTO carts (user_id, product_id, product_amount, total_price, cart_instance_id) VALUES ($1, $2, $3, $4, $5)', [userId, productId, productAmount, totalPrice, cartInstanceId], (err, result) =>{
+    db.query('INSERT INTO carts (user_id, product_id, product_amount, total_price, cart_instance_id) VALUES ($1, $2, $3, $4, $5) RETURNING *', [userId, productId, productAmount, totalPrice, cartInstanceId], (err, result) =>{
         if(err){
             return res.status(400).send(err);
         } else if (result.rowCount === 0){
             console.log(result);
             return res.status(400).send({message: 'Cart instance id not found'});
         }
-        res.status(200).send({message: `${productAmount} ${productId}(s) have been added to user id #${userId}'s cart`});
+        res.status(200).send({message: `${productAmount} ${productId}(s) have been added to user id #${userId}'s cart`, itemInfo: result.rows[0]});
     });
 
 });
