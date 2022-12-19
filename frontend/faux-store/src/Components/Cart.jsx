@@ -1,61 +1,66 @@
 import React, {useState, useEffect} from 'react';
 
 
-export default function Cart({userId}){
+export default function Cart({userId, itemToAdd}){
 
-    const [cart, setCart] = useState({id: 0, items:[], totalPrice: 0});
+    const [cart, setCart] = useState({id: "0a", items:[], totalPrice: 0});
 
     //on login, check to see if there is an active cart still in the cart DB for this user ID, if not create a new one.
     //Store the returned cart ID in a variable to use for this 'instance'
     //This function will then set the state array that will be modified and rendered through adding/removing items
-    useEffect(() =>{
+   
+    
+
+    const generateCart = async (userId) =>{
 
         
-        const generateCart = async (userId) =>{
-            
-            const temp = userId;
-            
-        try {
-            let res = await fetch(`http://localhost:3001/cart/user/${userId}`, {
-                method: "GET",
-                headers: {
-                    "Content-type": "application/json"
-                },
-            });
+    try {
+        let res = await fetch(`http://localhost:3001/cart/user/${userId}`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json"
+            },
+        });
 
-            let resJson = await res.json();
-            console.log(`resJson returned from res.json: ${resJson}`)
-            console.log(`cartId returned from generateCart: ${resJson.cartId}`)
-            if (resJson.cartId !== null) {
-                setCart(cart, { id: resJson.cartId });
-                populateCart(cart.id);
-            } else {
+        let resJson = await res.json();
+        console.log(`cartId returned from generateCart: ${resJson.cartId}`)
+        if (resJson.cartId !== null) {
+            setCart(prevState => {return {...prevState, id: resJson.cartId}});
+            populateCart(resJson.cartId);
+        } else {
+            
+            try {
                 
-                try {
-                    
-                    let newCartFetcher = await fetch('http://localhost:3001/cart', {
-                        method: "POST",
-                        headers: {
-                            "Content-type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            id: userId
-                        }),
-                    });
+                let newCartFetcher = await fetch('http://localhost:3001/cart', {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: userId
+                    }),
+                });
 
-                    const newCart = newCartFetcher.json();
-                    setCart(cart, { id: newCart.cartId });
-                } catch (err) {
-                    //alert(err);
-                    console.log(err);
-                    }
-            }
-        } catch (err) {
-            alert(err);
-            console.log(err);
-            }
+                const newCart = newCartFetcher.json();
+                setCart(cart, { id: newCart.cartId });
+            } catch (err) {
+                //alert(err);
+                console.log(err);
+                }
         }
+    } catch (err) {
+        alert(err);
+        console.log(err);
+        }
+    }
+
+    useEffect(() =>{   
         generateCart(userId);
+        console.log(cart.id);
+        //populateCart(cart.id);
+        //if(itemToAdd.item !== undefined){
+       //     addToCart(itemToAdd.item, itemToAdd.itemCount);
+       // }
 
     }, []);
 
@@ -67,32 +72,43 @@ export default function Cart({userId}){
         //map through the returned object and push each element to the current cart's items
         //as you are pushing the items to the cart, pull each items price and add it together with item.total_price
         //at the end set the cart's total_price
-        let priceReducer = 0;
+        let priceReducer = 0
+        let items = [];
+        
 
         try{
-            let res = await fetch(`http://localhost:3000/cart/${cartId}`, {
+            let res = await fetch(`http://localhost:3001/cart/${cartId}`, {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json"
                 },
             });
 
-            console.log(res);
+            
             const resJson = await res.json();
+            items = resJson;
+            
             
 
-            resJson.map((item) => (
-                setCart({
-                    ...cart, items: cart.items.push(item)
-                }),
-                priceReducer += item.total_price
-            ));
-
-            setCart({...cart, totalPrice: priceReducer})
+            
         } catch (err){
             //alert(err);
             console.log(err);
         }
+
+        console.log(items);
+
+        items.map((item) => (
+            setCart({
+                ...cart, items: cart.items.push(item)
+            }),
+            priceReducer = priceReducer + (item.total_price*item.product_amount),
+            console.log(priceReducer)
+        ));
+
+        setCart({...cart, totalPrice: priceReducer})
+
+        console.log(cart);
 
     }
 
@@ -113,21 +129,21 @@ export default function Cart({userId}){
         //set state of cart to include the new item and total price
         setCart({
             ...cart,
-            items: cart.items.push({item, count: itemCount}),
+            items: cart.items.push(item),
             totalPrice: cart.totalPrice + addedPrice,
         })
 
         //store new item in cart db to be pulled later for order generation/cart re-creation
         try{
-            let res = await fetch(`localhost:3000/cart/${cart.id}`, {
+            let res = await fetch(`http://localhost:3001/cart/${cart.id}`, {
                 method: 'POST',
-                header: {
+                headers: {
                     "Content-type": "application/json"
                 },
                 body: JSON.stringify({
                     productId: item.id, 
                     productAmount: itemCount, 
-                    cartInstanceId: cart.id, 
+                    cartInstanceId: "ac5b37ca-12b2-4af1-84ef-9c74c59c10fc", 
                     totalPrice: addedPrice,
                     userId: userId,
 
@@ -142,14 +158,17 @@ export default function Cart({userId}){
 
         }
 
+        console.log(cart);
+
 
     };
 
 
     return(
         <div className="cart-bar">
-            <p className='item-count'>Items in cart: {cart.items.length}</p>
-            <span className='total-price'>Total: ${cart.totalPrice}</span>
+            <p className='item-count'>Unique item Ids in cart: {cart.items.length}</p>
+            <span className='total-price'>Total: ${cart.totalPrice}  </span>
+            <span className='cart-items'>Cart Items: {cart.items.item}</span>
 
         </div>
     )

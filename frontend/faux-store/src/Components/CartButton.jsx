@@ -10,9 +10,9 @@ export default function CartButton({item, addToCartHandler }) {
                 <span className="product-info">
                     { generate ? <form className="item-count-input">
                                     <input name="count" type="number" required onChange={(e)=> setItemCount(e.target.value)}/>
-                                    <button name="add-to-cart" onClick={addToCartHandler(item, itemCount)}>Add {itemCount} to cart</button>
+                                    <button name="add-to-cart" onClick={(e)=> {addToCartHandler(item, itemCount, e); setGenerate(false); setItemCount(0)}}>Add {itemCount} to cart</button>
                                 </form> : 
-                                <button className="add-to-cart" onClick={()=>setGenerate(true)}>Add to cart</button>}
+                                <button name="generate" className="add-to-cart" onClick={()=>setGenerate(true)}>Add to cart</button>}
                 </span>
             </span>
         </div>
