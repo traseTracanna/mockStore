@@ -70,7 +70,7 @@ export default function(){
                 </Product>)): undefined}
             </div>
             <div className='cart-bar'>
-            <CartRework userId={7} addItemToCart={itemToAdd}/>
+            <CartRework userId={8} addItemToCart={itemToAdd}/>
                 
             </div>
             

@@ -52,3 +52,6 @@ Project Plan:
     Trying to work on the checkout feature but my current self who is trying to interface with the backend has a different methodology for storing
     items in order_details than my past self wrote the infrastructure for. So essentially i need to rework the backend for this because i think my new method
     is wiser than what i had originally planned to do.
+
+    Checkout is currently functioning as it should, creating an order and condensing it's details, and deleting the cart instance from the db. What it doesn't do is update the 
+    UI to reflect that the cart is empty. Probably just a function that will clear the state of everything cart-related when 'checkout' is activated.

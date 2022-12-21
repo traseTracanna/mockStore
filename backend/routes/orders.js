@@ -14,9 +14,6 @@ module.exports = ordersRouter;
 ordersRouter.post('/:id', (req, res) =>{
     const userId = req.params.id;
     const { itemsArray, orderDetailsId } = req.body;
-    console.log(itemsArray);
-    console.log(orderDetailsId);
-    console.log(userId);
 
     if(itemsArray === undefined){
         return res.status(400).send('itemsArray is undefined');
@@ -37,8 +34,15 @@ ordersRouter.post('/:id', (req, res) =>{
         if(err){
             return res.status(400).send(err);
         }
-        res.status(200).send('Order created successfully');
+        //res.status(200).send('Order created successfully');
 
+    })
+
+    db.query('DELETE FROM carts WHERE cart_instance_id = $1', [orderDetailsId], (err, result) =>{
+        if(err){
+            return res.status(400).send(err);
+        }
+        res.status(200).send('Order created, cart cleared');
     })
 
 
