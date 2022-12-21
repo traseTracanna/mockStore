@@ -20,7 +20,7 @@ export default function CartRework({userId, addItemToCart}){
 
     //Call populateCart when the cardId is first set
     useEffect(()=>{
-        if(!newCart && cart.cartId !== undefined){
+        if(!newCart && cart.cartId !== undefined && cart.items === undefined){
         fetchCartData(cart.cartId);
         }
     }, [cart.cartId]);

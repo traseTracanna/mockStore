@@ -13,11 +13,18 @@ module.exports = ordersRouter;
 //Create an order and fill in the new order's details
 ordersRouter.post('/:id', (req, res) =>{
     const userId = req.params.id;
-    const {itemsArray, orderDetailsId} = req.body;
+    const { itemsArray, orderDetailsId } = req.body;
+    console.log(itemsArray);
+    console.log(orderDetailsId);
+    console.log(userId);
+
+    if(itemsArray === undefined){
+        return res.status(400).send('itemsArray is undefined');
+    };
 
     //Cycles through the sent array of condesced item information and stores each unique item id for an order into order_details
-    for(item of itemsArray){
-        db.query('INSERT INTO order_details (user_id, product, product_amount, total_price, order_details_id) VALUES ($1, $2, $3, $4, $5)', [userId, itemsArray.name, itemsArray.count, itemsArray.price, orderDetailsId], (err, result) =>{
+    for(let item of itemsArray){
+        db.query('INSERT INTO order_details (user_id, product, product_amount, total_price, order_details_id) VALUES ($1, $2, $3, $4, $5)', [userId, item.name, item.count, item.price, orderDetailsId], (err, result) =>{
             if (err){
                 return res.status(400).send(err);
             }

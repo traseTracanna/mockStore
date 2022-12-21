@@ -56,20 +56,20 @@ export default function CheckoutButton({itemsFromCart, cartId, userId, cartClean
             let res = await fetch(`http://localhost:3001/order/${userId}`, {
                 method: "POST",
                 headers: {
-                    "Content-type": "appliction/json"
+                    "Content-type": "application/json"
                 },
                 body: JSON.stringify({
                     itemsArray: formattedOrder,
                     orderDetailsId: cartId,
 
-                })
+                }),
             });
             
             //so maybe once i verify that this process worked successfully i can then call cartCleanup from the Store.jsx component to delete all of the cart
             //instance information that should be stored as an order by this.
             //Alternatively, in the orders.js POST /:id function, the cart cleanUp could just be initiated once the order generation process is finished, 
             //saving myself another server call
-            resJson = await res.json();
+            const resJson = await res.json();
             console.log(`Response from attempt to store cart's data upon checkout: ${resJson}`);
 
         } catch (err) {
@@ -80,7 +80,7 @@ export default function CheckoutButton({itemsFromCart, cartId, userId, cartClean
 
     return(
         <div className="checkout-button">
-            <button name="checkout-button" className="checkout" onClick={orderFormatter(itemsFromCart)}>Checkout</button>
+            <button name="checkout-button" className="checkout" onClick={() => orderFormatter(itemsFromCart)}>Checkout</button>
         </div>
     )
 }
