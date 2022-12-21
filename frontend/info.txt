@@ -47,3 +47,8 @@ Project Plan:
     12/20:
     Didn't do much, but got cart items to display in a condensed manner without any major issues so that's pretty pogchamp.
     I think next up for the project is adding a "checkout" button which will delete the cart objects from the db and make an order in it's place
+
+    12/21:
+    Trying to work on the checkout feature but my current self who is trying to interface with the backend has a different methodology for storing
+    items in order_details than my past self wrote the infrastructure for. So essentially i need to rework the backend for this because i think my new method
+    is wiser than what i had originally planned to do.

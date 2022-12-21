@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useCallback } from 'react';
 import  Product  from './Product';
 import CartButton from './CartButton';
-import Cart from './Cart';
 import CartRework from './CartRework';
 
 

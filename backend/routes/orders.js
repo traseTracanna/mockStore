@@ -1,6 +1,5 @@
 const ordersRouter = require('express').Router();
 const db = require('../db/queries');
-const { v4: uuidv4 } = require("uuid");
 
 module.exports = ordersRouter;
 
@@ -11,10 +10,22 @@ module.exports = ordersRouter;
     //Delete an order -- this would be when an order is cancelled and possibly when a user account is deleted? 
 
 
+//Create an order and fill in the new order's details
+ordersRouter.post('/:id', (req, res) =>{
+    const userId = req.params.id;
+    const {itemsArray, orderDetailsId} = req.body;
 
-//Create a new order
-ordersRouter.post('/', (req, res) =>{
-    const {orderDetailsId, userId} = req.body;
+    //Cycles through the sent array of condesced item information and stores each unique item id for an order into order_details
+    for(item of itemsArray){
+        db.query('INSERT INTO order_details (user_id, product, product_amount, total_price, order_details_id) VALUES ($1, $2, $3, $4, $5)', [userId, itemsArray.name, itemsArray.count, itemsArray.price, orderDetailsId], (err, result) =>{
+            if (err){
+                return res.status(400).send(err);
+            }
+        })
+        
+    };
+
+    //Creates an order in the order table with the corresponding user and order_details_id to get a customer's every order without displaying all details, i guess
     db.query('INSERT INTO orders (user_id, order_details_id) VALUES ($1, $2)',[userId, orderDetailsId], (err, result) =>{
         if(err){
             return res.status(400).send(err);
@@ -22,6 +33,7 @@ ordersRouter.post('/', (req, res) =>{
         res.status(200).send('Order created successfully');
 
     })
+
 
 });
 

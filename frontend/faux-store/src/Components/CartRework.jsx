@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import CheckoutButton from './CheckoutButton';
 
 //TODO add a checkout feature to generate an order
 //TODO add display functionality to see all the items in the cart
@@ -204,7 +205,7 @@ export default function CartRework({userId, addItemToCart}){
         //This relies on the items in cart.items to have a .name property, but i'm not sure that they do, might need to use .id instead
         //In the same vein as the above comment, i'm using '.itemCount' as the item count property, but this might be named incorrectly
 
-        //this seems to work fine, but the logic for calculating the individual item price doesn't work correctly
+        //this seems to work fine, and i think i fixed the price logic, but it needs to be tested
         
         if(cart.items !== undefined){
         for(let item of cart.items){
@@ -217,6 +218,7 @@ export default function CartRework({userId, addItemToCart}){
                 const itemToCombineIndex = displayArray.findIndex((arrayElement) => arrayElement.name === itemInfo.name);
                 if(itemToCombineIndex > 0){
                     displayArray[itemToCombineIndex].count = displayArray[itemToCombineIndex].count + itemInfo.count;
+                    displayArray[itemToCombineIndex].price = displayArray[itemToCombineIndex].price + itemInfo.price;
                 } else{
                     displayArray.push(itemInfo);
                 }
@@ -229,6 +231,14 @@ export default function CartRework({userId, addItemToCart}){
 
     }
 
+    //This is called when the 'checkout' process is started
+    //This clears the current cart's data from the db after it is stored in the order_details table
+    //Might be able to bypass this by just having the initial server call that saves the cart info into an order do this once that info is properly saved
+    //negating the need for this function.
+    const clearCart = () =>{
+
+    };
+
 
 //Unique Ids and Total are both displaying correctly
 
@@ -237,6 +247,7 @@ export default function CartRework({userId, addItemToCart}){
             <p className='item-count'>Unique item Ids in cart: {cart.items === undefined ? 0 : cart.items.length}</p>
             <p className='total-price'>Total: ${cart.totalPrice}</p>
             <ul className='item-list'>{cartItemDisplayHelper()}</ul>
+            <CheckoutButton itemsFromCart={cart.items} cartId={cart.cartId} userId={userId} cartCleanup={clearCart}/>
 
         </div>
     )
