@@ -21,7 +21,7 @@ userRouter.get('/:id', (req, res) =>{
         if(err){
             return res.status(400).send(err);
         }
-        res.status(200).send(result);
+        res.status(200).send(result.rows[0]);
     })
 
 });

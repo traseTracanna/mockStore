@@ -34,7 +34,7 @@ export default function (props) {
             setEmail("");
             setPassword("");
             setMessage("Login successful");
-            navigate('/store', {state: { userId: resJson.userId}} );
+            navigate('/nav', {state: { userId: resJson.userId}} );
         } else{
             setMessage("Some Error occured");
         }

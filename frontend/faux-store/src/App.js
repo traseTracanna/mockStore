@@ -10,6 +10,7 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import Store from './Components/Store';
 import UserPage from './Components/UserPage';
+import NavBar from './Components/NavBar';
 import "./App.css"
 
 const router = createBrowserRouter([
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path:"/user",
     element: <UserPage />
+  },
+  {
+    path:"/nav",
+    element: <NavBar />
   }
 ]);
 

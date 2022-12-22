@@ -72,4 +72,9 @@ Project Plan:
     After that, a navbar to switch between the store page and the user page that also includes a logout button
     Once those two components are created the only thing left to do is beautification and product bolstering.
     And once that's done, it'll mostly just be fine tuning for errors and edge cases, which in my mind is optional content.
+
+    User page has been created but is still primitive in the data it shows
+        It still needs to be able to show the details of an order, so taht's probably the next major thing to do
+    Navbar is finished, and although i'm sure my code isn't very clean, as i will probably find out when i try to actually write the CSS, it does work
+    So basically, finish user page functionality, and then try to make things look pretty.
     

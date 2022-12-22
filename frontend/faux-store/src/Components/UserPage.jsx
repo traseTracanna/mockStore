@@ -3,9 +3,15 @@
 //The orders will be expandable to display their detailed information
 
 import React, { useState, useEffect } from 'react';
+import { useLocation} from 'react-router-dom';
 
 
-export default function UserPage({userId}){
+export default function UserPage(){
+    
+    const location = useLocation();
+    const userId = location.state.userId;
+
+
 
     //State item to define the current user
     const [user, setUser] = useState({userInfo: undefined, orderInfo: undefined});
@@ -16,7 +22,7 @@ export default function UserPage({userId}){
         loadUser(userId);
         loadOrders(userId);
         }
-    }, [userId]);
+    }, []);
 
 
     //load user data into the state 
@@ -53,7 +59,7 @@ export default function UserPage({userId}){
 
         try{
 
-            let res = await fetch(`http://localhost:3001/user/${userId}`, {
+            let res = await fetch(`http://localhost:3001/order/${userId}`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json"
@@ -61,6 +67,7 @@ export default function UserPage({userId}){
         });
 
             const resJson = await res.json();
+            console.log(resJson);
             if(resJson === undefined){
                 console.log('user orders not found');
                 
@@ -75,6 +82,11 @@ export default function UserPage({userId}){
 
     }
 
+    const orderDisplayHelper = (orders) =>{
+
+        return orders.map((item) => <li>Order Number: {item}</li>)
+    }
+
 
 
 
@@ -85,14 +97,18 @@ export default function UserPage({userId}){
             <h1>User Page</h1>
             <div className='user-info'>
                 <h2>User Info</h2>
+                {user.userInfo === undefined ? undefined :
                     <ul>
-                        <li>Username: </li>
-                        <li>Email: </li>
-                        <li>User Id: </li>
+                        <li>Username: {user.userInfo.username} </li>
+                        <li>Email: {user.userInfo.email}</li>
+                        <li>User Id: {user.userInfo.id}</li>
                     </ul>
+                    }
             </div>
             <div className='user-orders'>
                 <h2>Orders</h2>
+                {user.orderInfo === undefined ? undefined :
+                <ul>{orderDisplayHelper(user.orderInfo)}</ul>}
                     <div className='orders-list'>
 
                     </div>

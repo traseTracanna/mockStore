@@ -49,7 +49,7 @@ ordersRouter.post('/:id', (req, res) =>{
 });
 
 //Read an order's information
-ordersRouter.get('/:id', (req, res) =>{
+ordersRouter.get('/user/:id', (req, res) =>{
     const orderId = req.params.id;
     db.query('SELECT * FROM order_details WHERE order_details_id = $1', [orderId], (err, result) =>{
         if(err){
@@ -62,9 +62,9 @@ ordersRouter.get('/:id', (req, res) =>{
 });
 
 //Get all orders for one customer
-ordersRouter.get('/', (req,res) =>{
-    const customerId = req.body;
-    const orderIds = []; //an array of order_detail_ids for a specific customer
+ordersRouter.get('/:id', (req,res) =>{
+    const customerId = req.params.id;
+    let orderIds = []; //an array of order_detail_ids for a specific customer
     const orderDetails = {}; //an array of all order details for a specific customer fetched via order_ids
 
     //a query that fetches all order_ids for a specific user and puts them into the orderIds array
@@ -77,7 +77,10 @@ ordersRouter.get('/', (req,res) =>{
         for(let order of result.rows){
             orderIds.push(order.order_details_id);
         }
+        res.status(200).send(orderIds);
+        
     });
+
 
     //Loops through the orderIds array and queries for all items that were a part of that order, adding them to the orderDetails object where each param of the object is an order
     for(let orderIndex = 0; orderIndex < orderIds.length; orderIndex++){
@@ -90,7 +93,7 @@ ordersRouter.get('/', (req,res) =>{
             orderDetails.orderIds[orderIndex] = result.rows;
         });
     };
-    res.status(200).send(orderDetails);
+    //res.status(200).send(orderIds);
 
 });
 
