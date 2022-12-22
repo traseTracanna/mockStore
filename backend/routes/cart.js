@@ -14,15 +14,12 @@ module.exports = cartRouter;
 //Create a new cart
 cartRouter.post('/', (req, res) =>{
     const { id } = req.body;
-    console.log(req.body);
     const newCartId = uuidv4();
-    console.log(newCartId);
-    console.log(id);
-    db.query('INSERT INTO carts (user_id, product_id, product_amount, total_price, cart_instance_id) VALUES ($1, 1000, 0, 0, $2) RETURNING cart_instance_id', [id, newCartId], (err, result)=>{
+    db.query('INSERT INTO carts (user_id, product_id, product_amount, total_price, cart_instance_id) VALUES ($1, 1000, 0, 0, $2) RETURNING *', [id, newCartId], (err, result)=>{
         if (err){
             return res.status(400).send(err);
         }
-        res.status(200).send({cartId: result.rows[0].cart_instance_id});
+        res.status(200).send({cartId: result.rows[0].cart_instance_id, populateItem: result.rows});
     })
 
 });

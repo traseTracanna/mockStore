@@ -9,11 +9,12 @@ import {
 import Login from './Components/Login';
 import Register from './Components/Register';
 import Store from './Components/Store';
+import UserPage from './Components/UserPage';
 import "./App.css"
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: "/",
     element: <Login />
   },
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path:"/store",
     element: <Store />
+  },
+  {
+    path:"/user",
+    element: <UserPage />
   }
 ]);
 

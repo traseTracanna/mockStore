@@ -5,32 +5,30 @@ import CheckoutButton from './CheckoutButton';
 //TODO add display functionality to see all the items in the cart
 
 
-export default function CartRework({userId, addItemToCart}){
+export default function CartRework({userId, addItemToCart, clearItemFromCart}){
 
     const [cart, setCart] = useState({cartId: undefined, items: undefined, totalPrice: 0});
 
-
-    //This variable will act as a workaround to not call populateCart if the cart is new
-    let newCart;
 
     //Check if the given user has an active cart, initiating the generation of the Cart component
     useEffect(()=>{
         checkActiveCart(userId);
     }, []);
 
-    //Call populateCart when the cardId is first set
+    //Call populateCart when the cartId is first set
     useEffect(()=>{
-        if(!newCart && cart.cartId !== undefined && cart.items === undefined){
+        if(cart.cartId !== undefined && cart.items === undefined){
         fetchCartData(cart.cartId);
         }
     }, [cart.cartId]);
 
     //Call addItem when the itemToAdd state of Store.jsx is updated
+    console.log(cart.cartId);
     useEffect(()=>{
-        if(addItemToCart.item){
+        if(addItemToCart.item && cart.cartId !== undefined){
             addToCart(addItemToCart.item, addItemToCart.itemCount);
         }
-    }, [addItemToCart]);
+    }, [addItemToCart, cart.cartId]);
 
     //tries to display items in a cart
     useEffect(() =>{
@@ -55,10 +53,8 @@ export default function CartRework({userId, addItemToCart}){
 
             const resJson = await res.json();
             if(resJson.cartId === null){
-                newCart = true;
                 generateNewCart(userId);
             } else{
-                newCart = false;
                 setCart((prevCart) => { return { ...prevCart, cartId: resJson.cartId}});
             }
 
@@ -84,8 +80,10 @@ export default function CartRework({userId, addItemToCart}){
                 }),
             });
 
-            const newCart = newCartFetcher.json();
-            setCart((prevCart) => { return {...prevCart, cartId: newCart.cartId}});
+            const newCart = await newCartFetcher.json();
+            const updateCartId = newCart.cartId;
+            setCart((prevCart) => { return {...prevCart, cartId: updateCartId}});
+            populateCart(newCart.populateItem);
 
         } catch (err) {
             console.log(err);
@@ -178,8 +176,13 @@ export default function CartRework({userId, addItemToCart}){
 
             const resJson = await res.json();
             console.log(resJson.message);
-            const newItemsList = cart.items;
+            let newItemsList = [];
+            if(cart.items !== undefined){
+                newItemsList = cart.items;
+            }
+            
             newItemsList.push(resJson.itemInfo);
+            console.log(newItemsList);
 
             setCart((prevCart) =>{ return {...prevCart, items: newItemsList, totalPrice: cart.totalPrice + addedPrice}});
         } catch (err){
@@ -189,6 +192,7 @@ export default function CartRework({userId, addItemToCart}){
         }
 
         console.log(cart.items);
+        clearItemFromCart();
 
     };
 
@@ -236,6 +240,9 @@ export default function CartRework({userId, addItemToCart}){
     //Might be able to bypass this by just having the initial server call that saves the cart info into an order do this once that info is properly saved
     //negating the need for this function.
     const clearCart = () =>{
+        setCart(() =>{return {items: undefined, cartId: undefined, totalPrice: 0}});
+        cartItemDisplayHelper();
+        generateNewCart(userId);
 
     };
 

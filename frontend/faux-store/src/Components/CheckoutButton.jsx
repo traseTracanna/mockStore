@@ -80,7 +80,7 @@ export default function CheckoutButton({itemsFromCart, cartId, userId, cartClean
 
     return(
         <div className="checkout-button">
-            <button name="checkout-button" className="checkout" onClick={() => orderFormatter(itemsFromCart)}>Checkout</button>
+            <button name="checkout-button" className="checkout" onClick={() => {orderFormatter(itemsFromCart); cartCleanup()}}>Checkout</button>
         </div>
     )
 }

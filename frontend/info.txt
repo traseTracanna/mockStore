@@ -55,3 +55,21 @@ Project Plan:
 
     Checkout is currently functioning as it should, creating an order and condensing it's details, and deleting the cart instance from the db. What it doesn't do is update the 
     UI to reflect that the cart is empty. Probably just a function that will clear the state of everything cart-related when 'checkout' is activated.
+
+
+    12/22:
+    React router 'redirect' instead of 'useNavigate' when the redirect is in response to data i.e. a user logging in to a store page
+    That being said, i found an actual usable solution to my problem by using useNavigate: to pass the user ID info to the store page its like:
+        navigate("/store", { state: {userId: userid}})
+    and then to retrieve that info in the store code for cart loading, require useLocation like:
+        const location = useLocation();
+        const userId = location.state.userId;
+
+    Okay so the app functions as intended from the point of login to the point of submitting an order
+    The biggest fix at this point would be not having it display the default cart-creation item, and maybe even deleting it from the carts table once an actual product is added
+
+    The next major feature to work on is a user's page where a user can see all of their registered orders, and fetch data to be displayed from an individual order.
+    After that, a navbar to switch between the store page and the user page that also includes a logout button
+    Once those two components are created the only thing left to do is beautification and product bolstering.
+    And once that's done, it'll mostly just be fine tuning for errors and edge cases, which in my mind is optional content.
+    

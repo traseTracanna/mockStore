@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 export default function(props){
     const navigate = useNavigate();
     const navToLogin = () =>{
-        navigate('/login');
+        navigate('/');
     }
 
     const [username, setName] = useState("");

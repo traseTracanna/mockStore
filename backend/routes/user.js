@@ -52,7 +52,7 @@ userRouter.post('/login', (req,res) =>{
 
         if (user.rows[0].password === password){
             console.log('logged in successfully');
-            res.status(200).send({success: true});
+            res.status(200).send({success: true, userId: user.rows[0].id});
         } else{
             res.status(400).send('Wrong email or password');
         }

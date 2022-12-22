@@ -1,11 +1,15 @@
-import React, {useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import  Product  from './Product';
 import CartButton from './CartButton';
 import CartRework from './CartRework';
 
 
-export default function(){
-    
+export default function Store(){
+
+    const location = useLocation();
+    const userId = location.state.userId;
+    console.log(`UserId from login ${userId}`);
     const [products, setProducts] = useState([]);
     const [itemToAdd, setItemToAdd] = useState({item: undefined, itemCount: undefined});
     //make a method to get all of the items in the products db and save their info in variables to be displayed
@@ -46,6 +50,10 @@ export default function(){
 
     };
 
+    const clearItemToAdd = () =>{
+        setItemToAdd({item: undefined, itemCount: undefined});
+    };
+
 
 //console.log(products);
 
@@ -70,7 +78,7 @@ export default function(){
                 </Product>)): undefined}
             </div>
             <div className='cart-bar'>
-            <CartRework userId={8} addItemToCart={itemToAdd}/>
+            <CartRework userId={userId} addItemToCart={itemToAdd} clearItemFromCart={clearItemToAdd}/>
                 
             </div>
             

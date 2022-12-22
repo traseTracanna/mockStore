@@ -34,7 +34,7 @@ export default function (props) {
             setEmail("");
             setPassword("");
             setMessage("Login successful");
-            navigate('/store');
+            navigate('/store', {state: { userId: resJson.userId}} );
         } else{
             setMessage("Some Error occured");
         }
@@ -64,6 +64,7 @@ export default function (props) {
               type="email"
               className="form-control mt-1"
               placeholder="Enter email"
+              autoFocus
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
