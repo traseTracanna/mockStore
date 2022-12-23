@@ -15,6 +15,7 @@ export default function UserPage(){
 
     //State item to define the current user
     const [user, setUser] = useState({userInfo: undefined, orderInfo: undefined});
+    const [orderDetails, setOrderDetails] = useState(undefined);
 
     //makes load calls when page renders
     useEffect(() =>{
@@ -84,7 +85,33 @@ export default function UserPage(){
 
     const orderDisplayHelper = (orders) =>{
 
-        return orders.map((item) => <li>Order Number: {item}</li>)
+        return orders.map((item) => <li onClick={()=>{orderDetailFetcher(item)}}>Order Number: {item}</li>);
+    }
+
+    const orderDetailFetcher = async (orderNumber) =>{
+
+        try{
+
+            let res = await fetch(`http://localhost:3001/order/user/${orderNumber}`, {
+                method: "GET",
+                headers: {
+                    "Content-type":"application/json"
+                },
+            });
+
+            const resJson = await res.json();
+            setOrderDetails(resJson);
+
+
+        } catch (err){
+            console.log(err);
+        }
+
+    };
+
+    const orderDetailsDisplayhelper = (order) =>{
+
+        return order.map((item) => <li>Product: {item.product} | Amount: {item.product_amount} | Price: {item.total_price}</li>);
     }
 
 
@@ -110,6 +137,11 @@ export default function UserPage(){
                 {user.orderInfo === undefined ? undefined :
                 <ul>{orderDisplayHelper(user.orderInfo)}</ul>}
                     <div className='orders-list'>
+
+                    </div>
+                    <div className='order-details'>
+                        {orderDetails === undefined ? undefined :
+                        <ul>{orderDetailsDisplayhelper(orderDetails)}</ul>}
 
                     </div>
             </div>

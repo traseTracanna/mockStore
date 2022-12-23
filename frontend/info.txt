@@ -77,4 +77,11 @@ Project Plan:
         It still needs to be able to show the details of an order, so taht's probably the next major thing to do
     Navbar is finished, and although i'm sure my code isn't very clean, as i will probably find out when i try to actually write the CSS, it does work
     So basically, finish user page functionality, and then try to make things look pretty.
+    I didn't notice any side effects when trying to log in/out and switch between users, so it may require more testing, but it at least functioned fine for now.
+
+    12/23:
+    User page is basically finished, which means the app has full functionality as far as i'm concerned.
+    The only thing left to do is to:
+         1) make it look nice
+         2) add more fake products
     

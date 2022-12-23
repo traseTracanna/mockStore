@@ -9,7 +9,6 @@ export default function Store(){
 
     const location = useLocation();
     const userId = location.state.userId;
-    console.log(`UserId from login ${userId}`);
     const [products, setProducts] = useState([]);
     const [itemToAdd, setItemToAdd] = useState({item: undefined, itemCount: undefined});
     //make a method to get all of the items in the products db and save their info in variables to be displayed
@@ -44,8 +43,6 @@ export default function Store(){
         e.preventDefault();
         
         setItemToAdd({item: item, itemCount: itemCount})
-        //setItemToAdd({item: undefined, itemCount: undefined})
-        console.log(item, itemCount);
         
 
     };
@@ -55,16 +52,9 @@ export default function Store(){
     };
 
 
-//console.log(products);
-
-
    
     return(
         <div className="store-front">
-            <div className="search-bar">
-              {/*Use this section for a search bar which will filter product items by name, and then a drop down menu to select different category tags */}  
-
-            </div>
             <div className="product-tiles">
                 {/* dynamically generate a list of products using useState*/}
                 

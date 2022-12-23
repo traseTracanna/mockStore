@@ -1,9 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import CheckoutButton from './CheckoutButton';
 
-//TODO add a checkout feature to generate an order
-//TODO add display functionality to see all the items in the cart
-
 
 export default function CartRework({userId, addItemToCart, clearItemFromCart}){
 
@@ -142,13 +139,6 @@ export default function CartRework({userId, addItemToCart, clearItemFromCart}){
 
     //adds an item to the existing cart state
     //will also add the item to the corresponding cart in the DB for later fetching
-    //This will be called from a helper function in Store.jsx
-
-    //carts.pg is expecting: user_id, product_id, product_amount, total_price, and cart_instance_id
-
-    //i guess maybe a helper function to display the cart information to the user would condense all product amounts of the same product by their Id
-    //and display their name by comparing their id in the cart to the id of the item in the Products table. It just seems like a messy db transaction that isn't necessary,
-    //tho again, maybe i just need to worry about functionality and not quality of code work at this point.
     const addToCart = async (item, itemCount) =>{
         const addedPrice = item.price * itemCount;
 
@@ -156,8 +146,7 @@ export default function CartRework({userId, addItemToCart, clearItemFromCart}){
 
 
         //store new item in cart db to be pulled later for order generation/cart re-creation
-        //Also adds the stored item into the current cart's items property array -- may need functionality if this is the first item being added to the cart, as items is initially
-        //declared as 'undefined'
+        //Also adds the stored item into the current cart's items property array
         try{
             let res = await fetch(`http://localhost:3001/cart/${cart.cartId}`, {
                 method: 'POST',
